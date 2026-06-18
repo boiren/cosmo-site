@@ -1,0 +1,23 @@
+# Bağımlılıklar
+node_modules/
+
+# Ortam değişkenleri — ASLA commit'leme
+.env
+.env.local
+
+# Loglar
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build çıktısı
+dist/
+build/
