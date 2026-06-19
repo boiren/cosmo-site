@@ -19,12 +19,13 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const login = async (email, password) => {
-    const res = await authAPI.login({ email, password })
-    const { token, user } = res.data
-    localStorage.setItem('cosmo_token', token)
-    setUser(user)
-    return user
+const login = async (email, password) => {
+  const res = await authAPI.login({ email, password })
+  const data = res.data.data || res.data
+  const { token, user } = data
+  localStorage.setItem("cosmo_token", token)
+  setUser(user)
+  return user
   }
 
   const register = async (data) => {
