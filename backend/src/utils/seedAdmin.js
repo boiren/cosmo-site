@@ -1,7 +1,6 @@
 const User = require("../models/User")
 const Product = require("../models/Product")
 
-// Demo verisi — ilk çalıştırmada oluşturulur
 const DEMO_PRODUCTS = [
   {
     name: "Profesyonel Araç Bakım Seti",
@@ -18,10 +17,9 @@ const DEMO_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"],
     description: "Cosmo Technology Profesyonel Araç Bakım Seti...",
     features: ["Nano koruma teknolojisi", "UV filtreli formül"],
- specs: {
+    specs: {
       "İçerik Adedi": "16 parça",
       "Garanti": "2 yıl"
-},
     }
   },
   {
@@ -39,7 +37,7 @@ const DEMO_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80"],
     description: "Cosmo Dalış Seti...",
     features: ["Anti-fog silikon maske", "CE sertifikalı"],
-   specs: {
+    specs: {
       "Maks. Derinlik": "40 metre",
       "Garanti": "3 yıl"
     }
@@ -62,7 +60,6 @@ const DEMO_PRODUCTS = [
     specs: {
       "Kapasite": "12 Litre",
       "Garanti": "2 yıl"
-
     }
   },
   {
@@ -80,9 +77,35 @@ const DEMO_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=800&q=80"],
     description: "Cosmo Premium Ağız Bakım Seti...",
     features: ["40.000 titreşim/dk", "IPX7 su geçirmez"],
-     specs: {
+    specs: {
       "Pil Ömrü": "30 gün",
       "Garanti": "2 yıl"
     }
   }
 ]
+
+module.exports = async () => {
+  try {
+    const adminExists = await User.findOne({ email: process.env.ADMIN_EMAIL || "admin@mihomesanal.com" })
+
+    if (!adminExists) {
+      await User.create({
+        name: "Cosmo Admin",
+        email: process.env.ADMIN_EMAIL || "admin@mihomesanal.com",
+        password: process.env.ADMIN_PASSWORD || "Admin123!",
+        role: "admin",
+      })
+
+      console.log("✅ Demo admin kullanıcısı oluşturuldu")
+    }
+
+    const productCount = await Product.countDocuments()
+
+    if (productCount === 0) {
+      await Product.insertMany(DEMO_PRODUCTS)
+      console.log("✅ Demo ürünler oluşturuldu (4 ürün)")
+    }
+  } catch (err) {
+    console.error("Seed hatası:", err.message)
+  }
+}
