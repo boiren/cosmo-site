@@ -13,8 +13,8 @@ export default function AdminLogin() {
     e.preventDefault()
     setLoading(true)
     try {
-      const user = await login(form.email, form.password)
-      const user = result.user || result
+     const result = await login(form.email, form.password)
+     const user = result.user || result
       if (user.role !== "admin") {
         toast.error("Admin yetkisi gerekli")
         return
