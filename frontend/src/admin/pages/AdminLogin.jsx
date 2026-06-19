@@ -14,7 +14,7 @@ export default function AdminLogin() {
     setLoading(true)
     try {
      const result = await login(form.email, form.password)
-     const user = result.user || result
+     const user = result?.user || result || JSON.parse(localStorage.getItem("user") || "{}")
       if (user.role !== "admin") {
         toast.error("Admin yetkisi gerekli")
         return
